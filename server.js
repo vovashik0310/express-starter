@@ -1,9 +1,14 @@
 const express = require("express");
 const app = express();
 
+const usersRoute = require("./routes/users");
+const productsRoute = require("./routes/products");
+
 app.get("/", (req, res) => {
-  res.send("<h1>Hello World!</h1>");
+  res.send("Hello World");
 });
+app.use("/users", usersRoute);
+app.use("/products", productsRoute);
 
 const port = process.env.port || 5000;
 
