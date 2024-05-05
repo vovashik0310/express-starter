@@ -1,2 +1,3 @@
 # express-starter
-This repository embodies the foundational structure of an Express project.
+An Express project integrating JWT token authentication with MongoDB for robust user authentication and authorization.
+
