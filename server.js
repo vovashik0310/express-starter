@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const winston = require("winston");
 require("dotenv").config();
 const app = express();
 
@@ -15,11 +16,28 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 const con = mongoose.connection;
 
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  transports: [new winston.transports.Console()],
+});
+
+app.use((req, res, next) => {
+  logger.info({
+    method: req.method,
+    url: req.url,
+    statusCode: res.statusCode,
+    responseTime: Date.now() - req.startTime,
+  });
+  next();
+});
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
+
 app.use("/users", verifyToken, usersRoute);
 app.use("/products", productsRoute);
 app.use("/auth", authRoutes);
