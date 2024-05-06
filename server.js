@@ -4,17 +4,12 @@ const winston = require("winston");
 require("dotenv").config();
 const app = express();
 
+const connectDB = require("./config/db");
 const usersRoute = require("./routes/users");
 const productsRoute = require("./routes/products");
 const authRoutes = require("./routes/auth");
 const protectedRoutes = require("./routes/protectedRoute");
 const verifyToken = require("./controllers/authMiddleware");
-
-mongoose.connect(process.env.MONGO_URI, {
-  dbName: process.env.DATABASE_NAME,
-  useNewUrlParser: true,
-});
-const con = mongoose.connection;
 
 const logger = winston.createLogger({
   level: "info",

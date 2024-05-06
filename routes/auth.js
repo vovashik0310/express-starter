@@ -7,14 +7,14 @@ const jwt = require("jsonwebtoken");
 //User registration
 router.post("/register", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, email, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword });
+    const user = new User({ username, password: hashedPassword, email, ...(role !== undefined && { role })});
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Registration failed" });
+    res.status(500).json(err.errors);
   }
 });
 
